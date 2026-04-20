@@ -1,5 +1,6 @@
 package com.sr.JournalApp.handler;
 
+import com.sr.JournalApp.exception.EntryNotFoundException;
 import com.sr.JournalApp.exception.UserAlreadyExistsException;
 import com.sr.JournalApp.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> notFound(UserNotFoundException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(EntryNotFoundException.class)
+    public ResponseEntity<String> EntryNotFound(EntryNotFoundException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
     }
