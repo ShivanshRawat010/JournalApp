@@ -1,8 +1,10 @@
 package com.sr.JournalApp.service;
 
+import com.sr.JournalApp.entity.JournalEntry;
 import com.sr.JournalApp.entity.User;
 import com.sr.JournalApp.exception.UserAlreadyExistsException;
 import com.sr.JournalApp.exception.UserNotFoundException;
+import com.sr.JournalApp.repository.JournalEntryRepository;
 import com.sr.JournalApp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -75,6 +77,10 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         userRepository.deleteByUsername(userName);
+    }
+
+    public List<JournalEntry> getEntries(User user){
+        return user.getJournalEntries();
     }
 
     public void deleteById(String id) throws Exception {
