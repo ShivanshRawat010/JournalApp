@@ -1,6 +1,5 @@
 package com.sr.JournalApp.entity;
 
-import com.sr.JournalApp.enums.Sentiment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,5 +30,5 @@ public class User {
     private List<String> roles;
     @NonNull
     private Boolean sentimentAnalysis;
-    private Sentiment sentiment;
+    private String email;
 }
