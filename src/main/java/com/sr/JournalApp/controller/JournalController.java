@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -45,7 +46,9 @@ public class JournalController {
             old.setTitle(newEntry.getTitle()!=null && !newEntry.getTitle().isEmpty() ?newEntry.getTitle():"");
         }
 
-        journalEntryService.saveEntry(old);
+        old.setDate(LocalDateTime.now());
+
+        journalEntryService.updateEntry(old);
         return ResponseEntity.ok(old);
     }
 

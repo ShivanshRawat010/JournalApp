@@ -1,5 +1,6 @@
 package com.sr.JournalApp.service;
 
+import ch.qos.logback.core.util.Loader;
 import com.sr.JournalApp.entity.JournalEntry;
 import com.sr.JournalApp.entity.User;
 import com.sr.JournalApp.exception.EntryNotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,11 +27,15 @@ public class JournalEntryService {
         this.userService = userService;
     }
 
+    public void updateEntry(JournalEntry journalEntry){
+        journalEntryRepository.save(journalEntry);
+    }
+
     @Transactional
     public void saveEntry(JournalEntry journalEntry){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-
+        journalEntry.setDate(LocalDateTime.now());
         JournalEntry saved = journalEntryRepository.save(journalEntry);
 
         User user = userService.findByUsername(username).get();
