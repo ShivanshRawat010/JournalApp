@@ -1,5 +1,6 @@
 package com.sr.JournalApp.scheduler;
 
+import com.sr.JournalApp.cache.AppCache;
 import com.sr.JournalApp.entity.User;
 import com.sr.JournalApp.enums.Sentiment;
 import com.sr.JournalApp.repository.UserRepositoryImpl;
@@ -7,7 +8,6 @@ import com.sr.JournalApp.service.MailService;
 import com.sr.JournalApp.service.SentimentAnalysisService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -18,18 +18,21 @@ public class UserScheduler {
     private final MailService mailService;
     private final UserRepositoryImpl userRepository;
     private final SentimentAnalysisService sentimentAnalysisService;
+    private final AppCache appCache;
 
     UserScheduler (
             MailService mailService,
             UserRepositoryImpl userRepository,
-            SentimentAnalysisService sentimentAnalysisService
+            SentimentAnalysisService sentimentAnalysisService,
+            AppCache appCache
     ){
         this.mailService = mailService;
         this.userRepository = userRepository;
         this.sentimentAnalysisService = sentimentAnalysisService;
+        this.appCache = appCache;
     }
 
-    @Scheduled(cron = "0 0 9 ? * SUN *")
+    @Scheduled(cron = "0 0 9 ? * SUN")
     public void sendSaMail(){
         List<User> list = userRepository.getUsersForSA();
 
@@ -43,5 +46,9 @@ public class UserScheduler {
         }
     }
 
+    @Scheduled(cron = "0 0/10 * ? * *")
+    public void resetAppCache(){
+        appCache.init();
+    }
 
 }

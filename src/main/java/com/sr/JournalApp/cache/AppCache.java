@@ -17,7 +17,7 @@ public class AppCache {
         this.configJournalAppRepository = configJournalAppRepository;
     }
 
-    public Map<String,String> map = new HashMap<>();
+    public final Map<String,String> map = new HashMap<>();
 
     @PostConstruct
     public void init(){
