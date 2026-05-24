@@ -48,8 +48,6 @@ public class WeatherAPI {
 
             WeatherResponseEntity response = restClient.get().uri(url).retrieve().body(WeatherResponseEntity.class);
 
-            System.out.println(response);
-
             if (response!=null){
                 redisService.set(location,response, 300L);
             }

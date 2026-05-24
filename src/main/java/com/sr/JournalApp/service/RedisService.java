@@ -2,9 +2,7 @@ package com.sr.JournalApp.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sr.JournalApp.apiResponse.WeatherResponseEntity;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +32,7 @@ public class RedisService {
         }
     }
 
-    public <T> void set(String key, Object o, Long ttl){
+    public void set(String key, Object o, Long ttl){
         try{
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonValue = objectMapper.writeValueAsString(o);

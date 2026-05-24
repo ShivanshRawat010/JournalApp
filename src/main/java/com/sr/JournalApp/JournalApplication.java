@@ -10,6 +10,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+//@Configuration
+//@ComponentScan
+//@EnableAutoConfiguration
+
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableScheduling
