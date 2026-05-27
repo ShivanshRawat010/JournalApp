@@ -20,6 +20,7 @@ public class UserScheduler {
     private final SentimentAnalysisService sentimentAnalysisService;
     private final AppCache appCache;
     private final KafkaTemplate<String, SentimentData> kafkaTemplate;
+    private final MailService mailService;
 
     UserScheduler (
             MailService mailService,
@@ -32,6 +33,7 @@ public class UserScheduler {
         this.sentimentAnalysisService = sentimentAnalysisService;
         this.appCache = appCache;
         this.kafkaTemplate = kafkaTemplate;
+        this.mailService = mailService;
     }
 
     @Scheduled(cron = "0 0 9 ? * SUN")
@@ -42,7 +44,11 @@ public class UserScheduler {
             Sentiment sentiment = sentimentAnalysisService.getSentimentAnalysis(user);
             if(sentiment!=null){
                 SentimentData sentimentData = SentimentData.builder().email(user.getEmail()).sentiment(sentiment.toString()).build();
-                kafkaTemplate.send("weekly-sentiments", user.getEmail(), sentimentData);
+                try {
+                    kafkaTemplate.send("weekly-sentiments", user.getEmail(), sentimentData);
+                } catch (Exception e){
+                    mailService.sendEmail(sentimentData.getEmail(), "This weeks sentiment analysis is : ", sentimentData.getSentiment());
+                }
             }
 
         }
